@@ -15,8 +15,7 @@ class Layout extends React.Component {
         <Header nav="Header" />
         <div />
         <Body nav="Article 1" />
-        <div>
-         
+        <div>            
         </div>
         <Footer nav="Footer" />
       </Navbar>
