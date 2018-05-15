@@ -10,9 +10,7 @@ class Layout extends React.Component {
   state = {};
 
   render() {
-    return (
-
-      
+    return (   
       <Navbar widthBreakpoint="480" animation="slide">
         <Header nav="Header" />
         <div />
