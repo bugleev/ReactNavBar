@@ -79,7 +79,7 @@ class Dropdown extends React.Component {
     if(!this.state.show) {
       setTimeout(() => {
         this.setState({ show: true });
-      }, 150)
+      }, 200)
     }
   }
 
@@ -90,7 +90,7 @@ class Dropdown extends React.Component {
   hidePopup = (e, message) => {
     setTimeout(() => {
       (!this.state.popupHovered || message) && this.setState({ show: false, popupHovered:false });
-    }, 100);
+    }, 150);
   }
 
   componentDidMount() {
