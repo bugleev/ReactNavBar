@@ -54,7 +54,7 @@ class Navbar extends React.Component {
 
   handleHamburgerClick = () => {
     this.setState({ sideBarIsOpen: !this.state.sideBarIsOpen }, () => {
-      document.body.style.overflow = this.state.sideBarIsOpen
+      document.body.style.overflow = (this.state.sideBarIsOpen && this.props.animation !== "slide")
         ? "hidden"
         : "auto";
     });

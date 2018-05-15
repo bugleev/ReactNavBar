@@ -4,7 +4,6 @@ import Body from "./Components/Body";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import Navbar from "./Components/Navbar";
-import Dropdown from "./Components/Dropdown";
 
 class Layout extends React.Component {
   state = {};
