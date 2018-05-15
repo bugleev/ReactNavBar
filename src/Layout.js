@@ -11,6 +11,8 @@ class Layout extends React.Component {
 
   render() {
     return (
+
+      
       <Navbar widthBreakpoint="480" animation="slide">
         <Header nav="Header" />
         <div />
