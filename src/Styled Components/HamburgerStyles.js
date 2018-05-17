@@ -21,7 +21,7 @@ export const HamburgerIcon = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   box-shadow: ${props =>
-    props.toggle ? "none" : "0 2px 5px rgba(0, 0, 0, 0.2)"};
+    props.toggle ? "none" : "0 1px 3px rgba(0, 0, 0, 0.2)"};
   transition: 0.35s;
 
   &:before {
@@ -34,7 +34,7 @@ export const HamburgerIcon = styled.div`
     left: ${props => (props.toggle ? "0" : "50%")};
     transform: ${props =>
     props.toggle ? "rotate(45deg)" : "translate(-50%, -50%)"};
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     transition: 0.35s;
   }
   &:after {
@@ -47,7 +47,7 @@ export const HamburgerIcon = styled.div`
     left: ${props => (props.toggle ? "0" : "50%")};
     transform: ${props =>
     props.toggle ? "rotate(135deg)" : "translate(-50%, -50%)"};
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     transition: 0.35s;
   }
 `;

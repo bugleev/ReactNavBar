@@ -8,7 +8,6 @@ import {
   SidebarLogo,
   HamburgerWrapper,
   ListLink,
-  LinksWrapper,
   Logo,
   ItemsList,
   Item,
@@ -17,10 +16,61 @@ import {
 
 class Navbar extends React.Component {
   state = {
-    breakpointHit: false,
+    widthBreakpoint: null,
     windowInnerWidth: null,
+    breakpointHit: false,
     sideBarIsOpen: false,
+    sticky: false,
     links: []
+  };
+
+  calculateBreakpoint = () => {
+    let breakPoint;
+    if (this.props.widthBreakpoint === "auto") {
+      const logoSize = this.sizeLogo.getBoundingClientRect().width;
+      const linksSize = this.sizeLinks.getBoundingClientRect().width;
+      breakPoint = (logoSize + linksSize) / 0.75;
+    } else {
+      breakPoint = this.props.widthBreakpoint;
+    }
+    return breakPoint;
+  };
+  handleResize = () => {
+    const sizeChange =
+      window.innerWidth <= parseInt(this.state.widthBreakpoint, 10)
+        ? true
+        : false;
+    this.setState({
+      breakpointHit: sizeChange,
+      windowInnerWidth: window.innerWidth
+    });
+  };
+  handleHamburgerClick = () => {
+    const addOverflow = withTimer => {
+      withTimer
+        ? setTimeout(() => {
+            document.body.style.overflow = this.state.sideBarIsOpen
+              ? "hidden"
+              : "auto";
+          }, 250)
+        : (document.body.style.overflow = this.state.sideBarIsOpen
+            ? "hidden"
+            : "auto");
+    };
+    this.setState({ sideBarIsOpen: !this.state.sideBarIsOpen }, () => {
+      const useTimer =
+        this.props.animation === "slide" || !this.state.sideBarIsOpen
+          ? true
+          : false;
+      addOverflow(useTimer);
+    });
+  };
+  handleWindowScroll = () => {
+    window.scrollY > 50 && !this.state.sticky
+      ? this.setState({ sticky: true })
+      : window.scrollY < 50 &&
+        this.state.sticky &&
+        this.setState({ sticky: false });
   };
   componentWillMount() {
     this.handleResize();
@@ -32,43 +82,30 @@ class Navbar extends React.Component {
     }
     this.setState({ links: newLinks });
   }
-
-  handleResize = () => {
-    const sizeChange =
-      window.innerWidth <= parseInt(this.props.widthBreakpoint, 10)
-        ? true
-        : false;
-    this.setState({
-      breakpointHit: sizeChange,
-      windowInnerWidth: window.innerWidth
-    });
-  };
   componentDidMount() {
-    this.handleResize();
+    const breakPoint = this.calculateBreakpoint();
+    this.setState({ widthBreakpoint: breakPoint }, () => {
+      this.handleResize();
+    });
     window.addEventListener("resize", this.handleResize);
+    window.addEventListener("scroll", this.handleWindowScroll);
   }
-
   componentWillUnmount() {
     window.removeEventListener("resize", this.handleResize);
+    window.removeEventListener("scroll", this.handleWindowScroll);
   }
 
-  handleHamburgerClick = () => {
-    this.setState({ sideBarIsOpen: !this.state.sideBarIsOpen }, () => {
-      document.body.style.overflow = (this.state.sideBarIsOpen && this.props.animation !== "slide")
-        ? "hidden"
-        : "auto";
-    });
-  };
   render() {
     const {
       links,
       sideBarIsOpen,
       breakpointHit,
-      windowInnerWidth
+      windowInnerWidth,
+      sticky
     } = this.state;
-    const { animation } = this.props;
+    const { animation, height } = this.props;
     const dropDown = !breakpointHit ? (
-      <Dropdown anchorText="Values">
+      <Dropdown anchorText="Values" width="">
         <ul>
           <li>
             <a>Link 1</a>
@@ -115,30 +152,31 @@ class Navbar extends React.Component {
           reveal={animation === "reveal"}
         >
           <Backdrop sidebarOpen={sideBarIsOpen} />
-          <NavbarPanel resize={breakpointHit}>
-            <div>
-              <ItemsList resize={breakpointHit}>
-                <Logo> Logo </Logo>
-                <LinksWrapper>
-                  {dropDown}
-                  {!breakpointHit ? (
-                    links.map((el, ind) => (
-                      <Item key={ind}>
-                        <ListLink href="#">{el}</ListLink>
-                      </Item>
-                    ))
-                  ) : (
-                    <HamburgerWrapper resize={breakpointHit}>
-                      <Hamburger
-                        options={{ toggle: false, initialState: 0, size: "m" }}
-                        click={this.handleHamburgerClick}
-                        sidebarOpen={sideBarIsOpen}
-                      />
-                    </HamburgerWrapper>
-                  )}
-                </LinksWrapper>
-              </ItemsList>
-            </div>
+          <NavbarPanel resize={breakpointHit} navbarHeight={height} sticky={sticky}>
+            <ItemsList resize={breakpointHit}>
+              <Logo innerRef={el => (this.sizeLogo = el)}> Logo </Logo>
+              <div
+                ref={el => (this.sizeLinks = el)}
+                style={{ display: "flex" }}
+              >
+                {dropDown}
+                {!breakpointHit ? (
+                  links.map((el, ind) => (
+                    <Item key={ind}>
+                      <ListLink href="#">{el}</ListLink>
+                    </Item>
+                  ))
+                ) : (
+                  <HamburgerWrapper resize={breakpointHit}>
+                    <Hamburger
+                      options={{ toggle: false, initialState: 0, size: "m" }}
+                      click={this.handleHamburgerClick}
+                      sidebarOpen={sideBarIsOpen}
+                    />
+                  </HamburgerWrapper>
+                )}
+              </div>
+            </ItemsList>
           </NavbarPanel>
           {this.props.children}
         </Wrapper>
