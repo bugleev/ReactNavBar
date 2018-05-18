@@ -23,7 +23,7 @@ export const SideBar = styled.div.attrs({
   background-color: #e3e3e3; 
     > div{
       top: 5px;
-      position: fixed;
+      position: sticky;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -39,13 +39,11 @@ export const Backdrop = styled.div.attrs({
   }),
 }) `
   background-color: rgba(0,0,0,0.35);
-  transition: all 0.2s linear;
+  transition: all 0.2s;
   z-index: 89;
   position:absolute;
-  top: 0;
-  left:0;
-  bottom:0;
-  right:0;
+  width: 100vh;
+  height: 100vh;
 `;
 export const Logo = styled.h1`
    text-align: center;
