@@ -10,13 +10,14 @@ class Layout extends React.Component {
 
   render() {
     return (
-      <Navbar widthBreakpoint="auto" animation="push" height="">
+      <React.Fragment>
+        <Navbar widthBreakpoint="auto" animation="slide" height="" />
         <Header nav="Header" />
         <div />
         <Body nav="Article 1" />
         <div />
         <Footer nav="Footer" />
-      </Navbar>
+      </React.Fragment>
     );
   }
 }

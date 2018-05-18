@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const Wrapper = styled.div.attrs({
   style: props => ({
@@ -11,18 +11,24 @@ export const Wrapper = styled.div.attrs({
 `;
 export const SideBar = styled.div.attrs({
   style: props => ({
-    left: (props.reveal || props.sidebarOpen) ? "0" : props.width,
+    transform: (props.reveal || props.sidebarOpen) ? "translate3d(0, 0, 0)" : "translate3d(-100%, 0, 0)",
     boxShadow:  (props.reveal || props.sidebarOpen) ? "5px 0px 20px 1px rgba(0,0,0,0.15)" : "none",
     zIndex:  props.reveal ? "0" : "99",
-    transition: props.sidebarOpen ? "left 0.2s linear" : "left 0.2s ease-in"
+    transition: props.sidebarOpen ? "transform 0.2s" : "transform 0.2s"
   }),   
 })`
   height: 100%;
   width: 60%;
-  position: absolute;
-  top: 0;
-  background-color: #e3e3e3;
-  transition: left 0.2s linear; 
+  position: absolute;  
+  background-color: #e3e3e3; 
+    > div{
+      top: 5px;
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: ${props => props.width.slice(1)};
+    } 
 `;
 
 export const Backdrop = styled.div.attrs({
@@ -55,12 +61,36 @@ export const SidebarLogo = styled.h1.attrs({
    margin-top: 1rem;
    transition: all 0.1s linear;   
 `;
+
+const moveDown = keyframes`
+  0% {
+    transform: translate3d(0, -100%, 0);
+  }
+  100% {
+     transform: translate3d(0, 0, 0);
+  }
+`;
+const appear = keyframes`
+  0% {
+    opacity: 0;
+   
+
+  }
+  100% {
+     opacity: 1;
+   
+  }
+`;
 export const NavbarPanel = styled.div.attrs({
   style: props => ({
     position: props.sticky ? "fixed" : "absolute",
     boxShadow: props.sticky ? "0px 2px 5px rgba(0, 0, 0, 0.5)" : "0px 1px 3px rgba(0, 0, 0, 0.3)",
+    animationName: props.sticky ? moveDown : "none"
   }),
 })`
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
+  transition: box-shadow 0.2s;
   height: ${props => props.resize ? "50" : props.navbarHeight || "80"}px;
   width: 100%;
   display: flex;

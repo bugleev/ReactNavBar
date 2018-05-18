@@ -45,7 +45,7 @@ const DropdownBody = styled.div.attrs({
   color: rgba(0, 0, 0, 0.87);
   border-radius: 0.28571429rem;
   box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12),
-    0px 2px 10px 0px rgba(34, 36, 38, 0.15);
+  0px 2px 10px 0px rgba(34, 36, 38, 0.15);
     > *{
      list-style: none;
      padding: 0.2em;
