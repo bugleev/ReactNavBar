@@ -16,13 +16,11 @@ import {
 
 class Navbar extends React.Component {
   state = {
-    animation: !this.props.children ? "slide" : this.props.animation,
+    sidebarAnimation: this.props.sidebarAnimation,
     widthBreakpoint: null,
     breakpointHit: false,
     sideBarIsOpen: false,
     sticky: false,
-    windowInnerWidth: null,
-    scrolledAmount: null,
     links: []
   };
 
@@ -43,8 +41,7 @@ class Navbar extends React.Component {
         ? true
         : false;
     this.setState({
-      breakpointHit: sizeChange,
-      windowInnerWidth: window.innerWidth
+      breakpointHit: sizeChange
     });
   };
   handleHamburgerClick = () => {
@@ -62,20 +59,28 @@ class Navbar extends React.Component {
 
     this.setState(
       {
-        sideBarIsOpen: !this.state.sideBarIsOpen,
-        scrolledAmount: window.scrollY
+        sideBarIsOpen: !this.state.sideBarIsOpen
       },
       () => {
         const useTimer =
-          this.state.animation === "slide" || !this.state.sideBarIsOpen
+          this.state.sidebarAnimation === "slide" || !this.state.sideBarIsOpen
             ? true
             : false;
-        addOverflow(useTimer);        
+        addOverflow(useTimer);
+        if(this.state.sideBarIsOpen){
+          document.body.style.left ="320px";
+          document.body.style.transition="left 0.5s";
+        } else {
+          document.body.style.left = "0px";
+          document.body.style.transition = "left 0.3s";
+        }
+        
       }
     );
   };
   handleWindowScroll = () => {
-    const navbarHeight = this.props.height || 80;
+    const navbarHeight =
+      this.props.pinAnimation !== "follow" ? this.props.height || 80 : 0;
     window.scrollY > navbarHeight && !this.state.sticky
       ? this.setState({ sticky: true })
       : window.scrollY === 0 &&
@@ -100,6 +105,7 @@ class Navbar extends React.Component {
     this.createLinks();
   }
   componentDidMount() {
+    document.body.style.left = "0px";
     const breakPoint = this.calculateBreakpoint();
     this.setState({ widthBreakpoint: breakPoint }, () => {
       this.handleResize();
@@ -114,15 +120,13 @@ class Navbar extends React.Component {
 
   render() {
     const {
-      animation,
+      sidebarAnimation,
       links,
       sideBarIsOpen,
       breakpointHit,
-      windowInnerWidth,
-      sticky,
-      scrolledAmount
+      sticky
     } = this.state;
-    const { height } = this.props;
+    const { height, pinAnimation } = this.props;
     const dropDown = !breakpointHit ? (
       <Dropdown anchorText="Values" width="">
         <ul>
@@ -139,9 +143,8 @@ class Navbar extends React.Component {
       <div>
         <SideBar
           sidebarOpen={sideBarIsOpen}
-          width={`-${windowInnerWidth * 0.6}px`}
-          reveal={animation === "reveal"}
-          top={scrolledAmount}
+          slide={sidebarAnimation === "slide"}
+          id="sidebar"
         >
           <div>
             <HamburgerWrapper resize={breakpointHit}>
@@ -167,15 +170,15 @@ class Navbar extends React.Component {
         </SideBar>
         <Wrapper
           sidebarOpen={sideBarIsOpen}
-          enabled={animation !== "slide"}
-          width={`${windowInnerWidth * 0.6}px`}
-          reveal={animation === "reveal"}
+          enabled={sidebarAnimation !== "slide"}
+          id="nav-wrapper"
         >
-          <Backdrop sidebarOpen={sideBarIsOpen} className="backdrop"/>
+          <Backdrop sidebarOpen={sideBarIsOpen} className="backdrop" />
           <NavbarPanel
             resize={breakpointHit}
             navbarHeight={height}
             sticky={sticky}
+            follow={pinAnimation === "follow"}
           >
             <ItemsList resize={breakpointHit}>
               <Logo innerRef={el => (this.sizeLogo = el)}> Logo </Logo>
