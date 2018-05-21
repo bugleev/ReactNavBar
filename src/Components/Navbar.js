@@ -1,6 +1,5 @@
 import React from "react";
 import Hamburger from "./Hamburger";
-import Dropdown from "./Dropdown";
 import {
   Backdrop,
   NavbarPanel,
@@ -10,18 +9,17 @@ import {
   ListLink,
   Logo,
   ItemsList,
-  Item,
-  Wrapper
+  Item
 } from "../Styled Components/NavbarStyles";
 
 class Navbar extends React.Component {
   state = {
-    sidebarAnimation: this.props.sidebarAnimation,
     widthBreakpoint: null,
     breakpointHit: false,
     sideBarIsOpen: false,
     sticky: false,
-    links: []
+    links: [],
+    logos: []
   };
 
   calculateBreakpoint = () => {
@@ -48,35 +46,32 @@ class Navbar extends React.Component {
     const addOverflow = withTimer => {
       withTimer
         ? setTimeout(() => {
-            document.body.style.overflow = this.state.sideBarIsOpen
-              ? "hidden"
-              : "auto";
-          }, 250)
-        : (document.body.style.overflow = this.state.sideBarIsOpen
+          document.body.style.overflow = this.state.sideBarIsOpen
             ? "hidden"
-            : "auto");
+            : "auto";
+        }, 250)
+        : (document.body.style.overflow = this.state.sideBarIsOpen
+          ? "hidden"
+          : "auto");
     };
 
-    this.setState(
-      {
-        sideBarIsOpen: !this.state.sideBarIsOpen
-      },
-      () => {
-        const useTimer =
-          this.state.sidebarAnimation === "slide" || !this.state.sideBarIsOpen
-            ? true
-            : false;
-        addOverflow(useTimer);
-        if(this.state.sideBarIsOpen){
-          document.body.style.left ="320px";
-          document.body.style.transition="left 0.5s";
-        } else {
-          document.body.style.left = "0px";
-          document.body.style.transition = "left 0.3s";
-        }
-        
-      }
-    );
+    this.setState({ sideBarIsOpen: !this.state.sideBarIsOpen }, () => {
+      const useTimer =
+        this.props.sidebarAnimation === "slide" || !this.state.sideBarIsOpen
+          ? true
+          : false;
+      addOverflow(useTimer);
+      this.props.sidebarAnimation !== "slide" && this.addPushAnimation();
+    });
+  };
+  addPushAnimation = () => {
+    if (this.state.sideBarIsOpen) {
+      document.body.style.left = "320px";
+      document.body.style.transition = "left 0.5s";
+    } else {
+      document.body.style.left = "0px";
+      document.body.style.transition = "left 0.3s";
+    }
   };
   handleWindowScroll = () => {
     const navbarHeight =
@@ -84,27 +79,28 @@ class Navbar extends React.Component {
     window.scrollY > navbarHeight && !this.state.sticky
       ? this.setState({ sticky: true })
       : window.scrollY === 0 &&
-        this.state.sticky &&
-        this.setState({ sticky: false });
+      this.state.sticky &&
+      this.setState({ sticky: false });
   };
   createLinks = () => {
-    let newLinks = [];
-    if (this.props.children) {
-      for (let child of this.props.children) {
-        if (child.props.nav) {
-          newLinks.push(child.props.nav);
-        }
+    let myLinks = [];
+    let myLogos = [];
+    for (let child of this.props.children) {
+      if (child.props.navLogo) {
+        myLogos.push(child)
       }
-    } else {
-      newLinks = ["Hello", "Footer", "body", "Themes", "Stuff"];
+      if (child.props.navLink) {
+        myLinks.push(child);
+      }
     }
-    this.setState({ links: newLinks });
+    this.setState({ links: myLinks, logos: myLogos });
   };
   componentWillMount() {
     this.handleResize();
     this.createLinks();
   }
   componentDidMount() {
+    document.body.style.position = "relative";
     document.body.style.left = "0px";
     const breakPoint = this.calculateBreakpoint();
     this.setState({ widthBreakpoint: breakPoint }, () => {
@@ -120,25 +116,14 @@ class Navbar extends React.Component {
 
   render() {
     const {
-      sidebarAnimation,
       links,
+      logos,
       sideBarIsOpen,
       breakpointHit,
       sticky
     } = this.state;
-    const { height, pinAnimation } = this.props;
-    const dropDown = !breakpointHit ? (
-      <Dropdown anchorText="Values" width="">
-        <ul>
-          <li>
-            <a>Link 1</a>
-          </li>
-          <li>Link 2</li>
-          <li>Link 3</li>
-          <li>Link 4</li>
-        </ul>
-      </Dropdown>
-    ) : null;
+    const { height, pinAnimation, sidebarAnimation } = this.props;
+
     return (
       <div>
         <SideBar
@@ -168,32 +153,28 @@ class Navbar extends React.Component {
             </ItemsList>
           </div>
         </SideBar>
-        <Wrapper
-          sidebarOpen={sideBarIsOpen}
-          enabled={sidebarAnimation !== "slide"}
-          id="nav-wrapper"
+        <Backdrop sidebarOpen={sideBarIsOpen} className="backdrop" />
+        <NavbarPanel
+          resize={breakpointHit}
+          navbarHeight={height}
+          sticky={sticky}
+          follow={pinAnimation === "follow"}
         >
-          <Backdrop sidebarOpen={sideBarIsOpen} className="backdrop" />
-          <NavbarPanel
-            resize={breakpointHit}
-            navbarHeight={height}
-            sticky={sticky}
-            follow={pinAnimation === "follow"}
-          >
-            <ItemsList resize={breakpointHit}>
-              <Logo innerRef={el => (this.sizeLogo = el)}> Logo </Logo>
-              <div
-                ref={el => (this.sizeLinks = el)}
-                style={{ display: "flex" }}
-              >
-                {dropDown}
-                {!breakpointHit ? (
-                  links.map((el, ind) => (
-                    <Item key={ind}>
-                      <ListLink href="#">{el}</ListLink>
-                    </Item>
-                  ))
-                ) : (
+          <ItemsList resize={breakpointHit}>
+            <Logo innerRef={el => (this.sizeLogo = el)} id="logo-wrapper">
+              {logos}
+            </Logo>
+            <div
+              ref={el => (this.sizeLinks = el)}
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              {!breakpointHit ? (
+                links.map((el, ind) => (
+                  <Item key={ind}>
+                    {el}
+                  </Item>
+                ))
+              ) : (
                   <HamburgerWrapper resize={breakpointHit}>
                     <Hamburger
                       options={{ toggle: false, initialState: 0, size: "m" }}
@@ -202,11 +183,9 @@ class Navbar extends React.Component {
                     />
                   </HamburgerWrapper>
                 )}
-              </div>
-            </ItemsList>
-          </NavbarPanel>
-          {this.props.children}
-        </Wrapper>
+            </div>
+          </ItemsList>
+        </NavbarPanel>
       </div>
     );
   }

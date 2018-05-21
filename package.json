@@ -1,8 +1,7 @@
 {
   "name": "functional-react-navbar",
   "version": "1.0.0",
-  "description":
-    "Navbar with different states and options, using Styled Components",
+  "description": "Navbar with different states and options, using Styled Components",
   "keywords": [],
   "main": "src/Layout.js",
   "dependencies": {

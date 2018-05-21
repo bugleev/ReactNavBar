@@ -1,21 +1,19 @@
 import styled, { keyframes } from "styled-components";
 
-export const Wrapper = styled.div.attrs({
-  style: props => ({
-    
-  })
-})`
-  position: relative;
-  transition: left 0.2s linear;
-`;
 export const SideBar = styled.div.attrs({
   style: props => ({
     boxShadow: props.sidebarOpen ? "5px 0px 20px 1px rgba(0,0,0,0.15)" : "none",
     zIndex: !props.sidebarOpen ? "89" : "99",
-    transition: props.sidebarOpen ? "left 0.1s, box-shadow 0.2s, z-index 0.4s"
-      : "box-shadow 0.2s, z-index 0.5s"
+    left: props.slide ? props.sidebarOpen ? "0px" : "-320px" : "-320px",
+    transition: props.slide
+      ? props.sidebarOpen
+        ? "left 0.2s, box-shadow 0.2s, z-index 0.4s"
+        : "left 0.2s, box-shadow 0.2s, z-index 0.5s"
+      : props.sidebarOpen
+        ? "left 0.1s, box-shadow 0.2s, z-index 0.4s"
+        : "box-shadow 0.2s, z-index 0.5s"
   })
-})`
+}) `
   height: 100%;
   left: -320px;
   width: 320px;
@@ -35,14 +33,14 @@ export const Backdrop = styled.div.attrs({
   style: props =>
     props.sidebarOpen
       ? {
-          opacity: "1",
-          visibility: "visible"
-        }
+        opacity: "1",
+        visibility: "visible"
+      }
       : {
-          opacity: "0",
-          visibility: "hidden"
-        }
-})`
+        opacity: "0",
+        visibility: "hidden"
+      }
+}) `
   background-color: rgba(0, 0, 0, 0.35);
   transition: all 0.2s;
   z-index: 89;
@@ -52,16 +50,19 @@ export const Backdrop = styled.div.attrs({
   bottom: 0;
   left: 0;
 `;
-export const Logo = styled.h1`
+export const Logo = styled.div`
   text-align: center;
-  display: block;
+  display: flex;
+  > * {
+    margin: 0 0.2em;
+  }  
 `;
 
 export const SidebarLogo = styled.h1.attrs({
   style: props => ({
     visibility: props.sidebarOpen ? "visible" : "hidden"
   })
-})`
+}) `
   text-align: center;
   margin-top: 1rem;
   transition: all 0.1s linear;
@@ -83,7 +84,7 @@ export const NavbarPanel = styled.div.attrs({
       : "0px 1px 3px rgba(0, 0, 0, 0.3)",
     animationName: props.sticky && !props.follow ? moveDown : "none"
   })
-})`
+}) `
   animation-duration: 0.2s;
   animation-timing-function: ease-out;
   transition: box-shadow 0.2s;
@@ -100,7 +101,7 @@ export const HamburgerWrapper = styled.div.attrs({
   style: props => ({
     top: props.resize ? "25px" : "45px"
   })
-})`
+}) `
   position: absolute;
   left: 40px;
 `;
@@ -110,10 +111,10 @@ export const ItemsList = styled.ul.attrs({
     justifyContent: props.resize ? "center" : "space-between",
     margin: props.sidebar ? "1rem" : "0 auto"
   })
-})`
+}) `
   width: 80%;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   font-size: 1.2rem;
   padding: 0.2em;
 `;
@@ -121,8 +122,6 @@ export const Item = styled.li`
   list-style: none;
   margin: 0.25em;
   padding: 0.25em;
-`;
-export const ListLink = styled.a`
   display: inline-block;
   text-decoration: none;
   color: inherit;
@@ -131,4 +130,7 @@ export const ListLink = styled.a`
     transform: translateY(-3px);
     color: #fff;
   }
+`;
+export const ListLink = styled.a`
+  
 `;
