@@ -21,19 +21,22 @@ const fadeOutDown = keyframes`
     transform: scaleY(0);
   }
 `;
-const DropdownBody = styled.div`
+const DropdownBody = styled.div.attrs({
+  style: props => ({
+    visibility:(props.show ? "visible" : "hidden"),
+    animationName: props.show ? fadeInDown : fadeOutDown
+  }),
+})`
   position: absolute;
-  min-width: ${props => props.coords.width}px;
-  top: ${props => props.coords.top + 40}px;
-  left: ${props => props.coords.left}px;
-  visibility: ${props => (props.show ? "visible" : "hidden")};
-  transform-origin: top center;
-  animation: 0.3s ${props => (props.show ? fadeInDown : fadeOutDown)} ease;
+  width: ${props => props.width || props.coords.width}px;
+  top: ${props => props.coords.height+5}px;
+  animation-duration: 0.3s;
+  animation-timing-function: ease;
+  transform-origin: top center; 
   transition: visibility 0.3s ease;
   display:flex;
   flex-direction: column;
   justify-content: center;
-  min-width: min-content;
   z-index: 1900;
   border: 1px solid #d4d4d5;
   max-width: 250px;
@@ -42,7 +45,7 @@ const DropdownBody = styled.div`
   color: rgba(0, 0, 0, 0.87);
   border-radius: 0.28571429rem;
   box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12),
-    0px 2px 10px 0px rgba(34, 36, 38, 0.15);
+  0px 2px 10px 0px rgba(34, 36, 38, 0.15);
     > *{
      list-style: none;
      padding: 0.2em;
@@ -63,8 +66,7 @@ const DropdownAnchor = styled.a`
   list-style: none;
   
 `;
-
-class Dropdown extends React.Component {
+class Dropdown extends React.PureComponent {
   state = {
     show: false,
     popupHovered: false,
@@ -74,12 +76,12 @@ class Dropdown extends React.Component {
       width: 0
     }
   };
-
+  
   showPopup = (e, message) => {
     if(!this.state.show) {
       setTimeout(() => {
         this.setState({ show: true });
-      }, 150)
+      }, 200)
     }
   }
 
@@ -90,7 +92,7 @@ class Dropdown extends React.Component {
   hidePopup = (e, message) => {
     setTimeout(() => {
       (!this.state.popupHovered || message) && this.setState({ show: false, popupHovered:false });
-    }, 100);
+    }, 150);
   }
 
   componentDidMount() {
@@ -99,18 +101,18 @@ class Dropdown extends React.Component {
   }
 
   render() {
-    const text = this.props.anchorText;
+    const {anchorText, width} = this.props;
     return (
-      <div >
+      <div style={{position: "relative"}}>
         <DropdownAnchor 
           onMouseEnter={this.showPopup}
           onMouseLeave={this.hidePopup}
           innerRef={el => (this.anchorBox = el)}
         >
-          {text}
+          {anchorText}
         </DropdownAnchor>
-
         <DropdownBody
+          width={width}
           show={this.state.show}
           coords={this.state.coords}
           onMouseEnter={this.popupHovered}

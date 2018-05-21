@@ -48,6 +48,48 @@ class Body extends React.Component {
         </div>
         <div>
           <Text>{faker.lorem.sentences()}</Text>
+          <p style={{fontSize:"1.5rem"}}>
+            Sed porttitor lectus nibh. Lorem ipsum dolor sit amet, consectetur
+            adipiscing elit. Vivamus magna justo, lacinia eget consectetur sed,
+            convallis at tellus. Donec rutrum congue leo eget malesuada. Proin
+            eget tortor risus. Cras ultricies ligula sed magna dictum porta.
+            Vestibulum ac diam sit amet quam vehicula elementum sed sit amet
+            dui. Curabitur non nulla sit amet nisl tempus convallis quis ac
+            lectus. Sed porttitor lectus nibh. Lorem ipsum dolor sit amet,
+            consectetur adipiscing elit. Vivamus magna justo, lacinia eget
+            consectetur sed, convallis at tellus. Donec rutrum congue leo eget
+            malesuada. Proin eget tortor risus. Cras ultricies ligula sed magna
+            dictum porta. Vestibulum ac diam sit amet quam vehicula elementum
+            sed sit amet dui. Curabitur non nulla sit amet nisl tempus convallis
+            quis ac lectus.Sed porttitor lectus nibh. Lorem ipsum dolor sit
+            amet, consectetur adipiscing elit. Vivamus magna justo, lacinia eget
+            consectetur sed, convallis at tellus. Donec rutrum congue leo eget
+            malesuada. Proin eget tortor risus. Cras ultricies ligula sed magna
+            dictum porta. Vestibulum ac diam sit amet quam vehicula elementum
+            sed sit amet dui. Curabitur non nulla sit amet nisl tempus convallis
+            quis ac lectus.
+          </p>
+          <p style={{fontSize:"1.5rem"}}>
+            Sed porttitor lectus nibh. Lorem ipsum dolor sit amet, consectetur
+            adipiscing elit. Vivamus magna justo, lacinia eget consectetur sed,
+            convallis at tellus. Donec rutrum congue leo eget malesuada. Proin
+            eget tortor risus. Cras ultricies ligula sed magna dictum porta.
+            Vestibulum ac diam sit amet quam vehicula elementum sed sit amet
+            dui. Curabitur non nulla sit amet nisl tempus convallis quis ac
+            lectus. Sed porttitor lectus nibh. Lorem ipsum dolor sit amet,
+            consectetur adipiscing elit. Vivamus magna justo, lacinia eget
+            consectetur sed, convallis at tellus. Donec rutrum congue leo eget
+            malesuada. Proin eget tortor risus. Cras ultricies ligula sed magna
+            dictum porta. Vestibulum ac diam sit amet quam vehicula elementum
+            sed sit amet dui. Curabitur non nulla sit amet nisl tempus convallis
+            quis ac lectus.Sed porttitor lectus nibh. Lorem ipsum dolor sit
+            amet, consectetur adipiscing elit. Vivamus magna justo, lacinia eget
+            consectetur sed, convallis at tellus. Donec rutrum congue leo eget
+            malesuada. Proin eget tortor risus. Cras ultricies ligula sed magna
+            dictum porta. Vestibulum ac diam sit amet quam vehicula elementum
+            sed sit amet dui. Curabitur non nulla sit amet nisl tempus convallis
+            quis ac lectus.
+          </p>
         </div>
       </MainContent>
     );

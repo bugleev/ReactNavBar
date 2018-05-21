@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "oldlace",
     padding: "1rem",
+    paddingTop: "80px",
     boxSizing: "border-box",
     textAlign: "center"
   },

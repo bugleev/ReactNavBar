@@ -4,21 +4,27 @@ import Body from "./Components/Body";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import Navbar from "./Components/Navbar";
-import Dropdown from "./Components/Dropdown";
 
 class Layout extends React.Component {
   state = {};
 
   render() {
     return (
-      <Navbar widthBreakpoint="480" animation="slide">
+      <React.Fragment>
+      <div>
+        <Navbar
+          height="120"
+          widthBreakpoint="auto"
+          sidebarAnimation="push"
+          pinAnimation="follow"
+        />
+      </div>
         <Header nav="Header" />
         <div />
         <Body nav="Article 1" />
-        <div>            
-        </div>
+        <div />
         <Footer nav="Footer" />
-      </Navbar>
+      </React.Fragment>
     );
   }
 }
