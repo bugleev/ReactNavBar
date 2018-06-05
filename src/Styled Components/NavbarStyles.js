@@ -18,7 +18,7 @@ export const SideBar = styled.div.attrs({
   left: -320px;
   width: 320px;
   position: absolute;
-  background-color: #e3e3e3;
+  background-color: #fefefe;
   > div {
     top: 5px;
     position: sticky;
@@ -53,6 +53,9 @@ export const Backdrop = styled.div.attrs({
 export const Logo = styled.div`
   text-align: center;
   display: flex;
+  & img {
+    height: ${props => (props.resize ? "50" : props.navbarHeight || "80")}px;
+  }
   > * {
     margin: 0 0.2em;
   }  
@@ -94,8 +97,9 @@ export const NavbarPanel = styled.div.attrs({
   align-items: center;
   z-index: 79;
   margin-bottom: 0.1em;
-  background: radial-gradient(circle at bottom center, #ffc837 15px, #ff8008);
-  color: #efefef;
+  /*background: radial-gradient(circle at bottom center, #ffc837 15px, #ff8008);*/
+  background-color: #fefefe;
+  color: #333;
 `;
 export const HamburgerWrapper = styled.div.attrs({
   style: props => ({
@@ -118,18 +122,16 @@ export const ItemsList = styled.ul.attrs({
   font-size: 1.2rem;
   padding: 0.2em;
 `;
-export const Item = styled.li`
+export const Item = styled.div`
   list-style: none;
+  text-align: center;
   margin: 0.25em;
   padding: 0.25em;
   display: inline-block;
   text-decoration: none;
   color: inherit;
   transition: transform 0.2s ease;
-  &:hover {
-    transform: translateY(-3px);
-    color: #fff;
-  }
+  
 `;
 export const ListLink = styled.a`
   

@@ -89,7 +89,7 @@ class Navbar extends React.Component {
       if (child.props.navLogo) {
         myLogos.push(child)
       }
-      if (child.props.navLink) {
+      if (child.props.navlink) {
         myLinks.push(child);
       }
     }
@@ -122,6 +122,15 @@ class Navbar extends React.Component {
       breakpointHit,
       sticky
     } = this.state;
+    const newLinks = React.Children.map(links, (child, index) => {
+      if (typeof child.type !== "string") {
+        return React.cloneElement(child, {
+          breakpointHit: this.state.breakpointHit
+        })
+      } else {
+        return React.cloneElement(child)
+      }
+    });
     const { height, pinAnimation, sidebarAnimation } = this.props;
 
     return (
@@ -138,16 +147,16 @@ class Navbar extends React.Component {
                   toggle: false,
                   initialState: 1,
                   size: "m",
-                  color: "green"
+                  color: "black"
                 }}
                 click={this.handleHamburgerClick}
               />
             </HamburgerWrapper>
             <SidebarLogo sidebarOpen={sideBarIsOpen}> Logo </SidebarLogo>
             <ItemsList resize={breakpointHit} sidebar={true}>
-              {links.map((el, ind) => (
+              {newLinks.map((el, ind) => (
                 <Item key={ind} sidebar={true}>
-                  <ListLink href="#">{el}</ListLink>
+                  {el}
                 </Item>
               ))}
             </ItemsList>
@@ -161,7 +170,11 @@ class Navbar extends React.Component {
           follow={pinAnimation === "follow"}
         >
           <ItemsList resize={breakpointHit}>
-            <Logo innerRef={el => (this.sizeLogo = el)} id="logo-wrapper">
+            <Logo
+              resize={breakpointHit}
+              navbarHeight={height}
+              innerRef={el => (this.sizeLogo = el)} id="logo-wrapper"
+            >
               {logos}
             </Logo>
             <div
@@ -169,7 +182,7 @@ class Navbar extends React.Component {
               style={{ display: "flex", alignItems: "center" }}
             >
               {!breakpointHit ? (
-                links.map((el, ind) => (
+                newLinks.map((el, ind) => (
                   <Item key={ind}>
                     {el}
                   </Item>
@@ -177,7 +190,7 @@ class Navbar extends React.Component {
               ) : (
                   <HamburgerWrapper resize={breakpointHit}>
                     <Hamburger
-                      options={{ toggle: false, initialState: 0, size: "m" }}
+                      options={{ toggle: false, initialState: 0, size: "m", color: "black" }}
                       click={this.handleHamburgerClick}
                       sidebarOpen={sideBarIsOpen}
                     />

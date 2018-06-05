@@ -5,12 +5,12 @@
   "keywords": [],
   "main": "src/Layout.js",
   "dependencies": {
-    "aphrodite": "2.2.0",
-    "faker": "4.1.0",
-    "react": "16.3.2",
-    "react-dom": "16.3.2",
-    "react-scripts": "1.1.4",
-    "styled-components": "3.2.6"
+    "aphrodite": "^2.2.1",
+    "faker": "~4.1.0",
+    "react": "~16.3.2",
+    "react-dom": "~16.3.2",
+    "react-scripts": "~1.1.4",
+    "styled-components": "~3.2.6"
   },
   "devDependencies": {},
   "scripts": {

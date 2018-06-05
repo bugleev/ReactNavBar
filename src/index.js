@@ -4,12 +4,12 @@ import Body from "./Components/Body";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import Navbar from "./Components/Navbar";
-import Dropdown from "./Components/Dropdown";
+import DropdownSidebar from "./Components/DropDownSidebar";
 
 const Logo = () => (
   <div>
     <a href="#">
-      <img src="https://www.seoclerk.com/pics/558390-11FO8A1505384509.png" alt="logo" width="80px" height="80px" />
+      <img src="https://www.seoclerk.com/pics/558390-11FO8A1505384509.png" alt="logo" />
     </a>
   </div>
 )
@@ -25,10 +25,10 @@ class Layout extends React.Component {
           <Navbar
             height=""
             widthBreakpoint="auto"
-            sidebarAnimation="push"
-            pinAnimation="popup"
+            sidebarAnimation="slide"
+            pinAnimation="follow"
           >
-            <Dropdown anchorText="Values" width="" navLink>
+            <DropdownSidebar anchorText="Values" width="" navlink="true">
               <ul>
                 <li>
                   <a>Link 1</a>
@@ -37,13 +37,13 @@ class Layout extends React.Component {
                 <li>Link 3</li>
                 <li>Link 4</li>
               </ul>
-            </Dropdown>
-            <div navLink>
+            </DropdownSidebar>
+            <div navlink="true">
               <p><a href="#footer">Nested link</a></p>
             </div>
-            <li navLink>Link LI</li>
-            <li navLink>Crazy stuff</li>
-            <a href="#" navLink>Direct Link</a>
+            <li navlink="true">Link LI</li>
+            <li navlink="true">Crazy stuff</li>
+            <a href="#" navlink="true">Direct Link</a>
             <Logo navLogo />
           </Navbar>
         </div>
