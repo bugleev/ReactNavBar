@@ -4,12 +4,12 @@ import Body from "./Components/Body";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import Navbar from "./Components/Navbar";
-import DropdownSidebar from "./Components/DropDownSidebar";
+import Dropdown from "./Components/Dropdown";
 
 const Logo = () => (
   <div>
     <a href="#">
-      <img src="https://www.seoclerk.com/pics/558390-11FO8A1505384509.png" alt="logo" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1000px-React-icon.svg.png" alt="logo" />
     </a>
   </div>
 )
@@ -28,16 +28,16 @@ class Layout extends React.Component {
             sidebarAnimation="slide"
             pinAnimation="follow"
           >
-            <DropdownSidebar anchorText="Values" width="" navlink="true">
+            <Dropdown anchorText="Values" width="150" navlink="true">
               <ul>
                 <li>
-                  <a>Link 1</a>
+                  <a>Link 1. LOng one</a>
                 </li>
-                <li>Link 2</li>
+                <li>Link 2. Reaaly reaaly long one</li>
                 <li>Link 3</li>
                 <li>Link 4</li>
               </ul>
-            </DropdownSidebar>
+            </Dropdown>
             <div navlink="true">
               <p><a href="#footer">Nested link</a></p>
             </div>

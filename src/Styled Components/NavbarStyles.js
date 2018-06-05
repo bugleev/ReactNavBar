@@ -4,7 +4,13 @@ export const SideBar = styled.div.attrs({
   style: props => ({
     boxShadow: props.sidebarOpen ? "5px 0px 20px 1px rgba(0,0,0,0.15)" : "none",
     zIndex: !props.sidebarOpen ? "89" : "99",
-    left: props.slide ? props.sidebarOpen ? "0px" : "-320px" : "-320px",
+    left: props.width
+      ? props.slide
+        ? props.sidebarOpen
+          ? "0px"
+          : `-${props.width}px`
+        : "-320px"
+      : "-320px",
     transition: props.slide
       ? props.sidebarOpen
         ? "left 0.2s, box-shadow 0.2s, z-index 0.4s"
@@ -14,9 +20,8 @@ export const SideBar = styled.div.attrs({
         : "box-shadow 0.2s, z-index 0.5s"
   })
 }) `
-  height: 100%;
-  left: -320px;
-  width: 320px;
+  height: 100%; 
+  width:  ${props => (props.width ? props.width : "320")}px;
   position: absolute;
   background-color: #fefefe;
   > div {
@@ -69,6 +74,9 @@ export const SidebarLogo = styled.h1.attrs({
   text-align: center;
   margin-top: 1rem;
   transition: all 0.1s linear;
+  & img {
+    height: 80px;
+  }
 `;
 
 const moveDown = keyframes`
@@ -85,13 +93,13 @@ export const NavbarPanel = styled.div.attrs({
     boxShadow: props.sticky
       ? "0px 2px 5px rgba(0, 0, 0, 0.5)"
       : "0px 1px 3px rgba(0, 0, 0, 0.3)",
-    animationName: props.sticky && !props.follow ? moveDown : "none"
+    animationName: props.sticky && !props.follow ? moveDown : "none",
+    height: props.resize ? "50px" : props.navbarHeight || "80px"
   })
 }) `
   animation-duration: 0.2s;
   animation-timing-function: ease-out;
-  transition: box-shadow 0.2s;
-  height: ${props => (props.resize ? "50" : props.navbarHeight || "80")}px;
+  transition: box-shadow 0.2s;  
   width: 100%;
   display: flex;
   align-items: center;

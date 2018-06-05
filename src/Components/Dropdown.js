@@ -1,6 +1,79 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 
+class Dropdown extends React.PureComponent {
+  state = {
+    show: false,
+    popupIsHovered: false,
+    coords: {
+      top: 0,
+      left: 0,
+      width: 0
+    }
+  };
+
+  showPopup = () => {
+    if (!this.state.show) {
+      setTimeout(() => {
+        this.setState({ show: true });
+      }, 200)
+    }
+  }
+  handleClick = () => {
+    this.setState({ show: !this.state.show });
+  }
+  popupIsHovered = () => {
+    this.setState({ popupIsHovered: true });
+  };
+
+  hidePopup = (e, message) => {
+    setTimeout(() => {
+      (!this.state.popupIsHovered || message) && this.setState({ show: false, popupIsHovered: false });
+    }, 150);
+  }
+
+  componentDidMount() {
+    const newCoords = this.anchorBox.getBoundingClientRect();
+    this.setState({ coords: newCoords });
+  }
+
+  render() {
+    const { anchorText, width, breakpointHit } = this.props;
+    return (
+      <div style={{ position: "relative" }}>
+        <DropdownAnchor
+          onMouseEnter={!breakpointHit ? this.showPopup : undefined}
+          onMouseLeave={!breakpointHit ? this.hidePopup : undefined}
+          onClick={breakpointHit ? this.handleClick : undefined}
+          onBreakpointHit={breakpointHit}
+          innerRef={el => (this.anchorBox = el)}
+        >
+          {anchorText}
+        </DropdownAnchor>
+        {breakpointHit
+          ? <DropdownBodySidebar
+            className="dropdown__body--sidebar"
+            width={width}
+            show={this.state.show}
+            coords={this.state.coords}
+          >
+            {this.props.children}
+          </DropdownBodySidebar>
+          : <DropdownBody
+            className="dropdown__body--sidebar"
+            width={width}
+            show={this.state.show}
+            coords={this.state.coords}
+            onMouseEnter={this.popupIsHovered}
+            onMouseLeave={(e) => this.hidePopup(e, "hovered")}
+          >
+            {this.props.children}
+          </DropdownBody>}
+
+      </div>
+    );
+  }
+}
 const fadeInDown = keyframes`
   0% {
     opacity: 0;
@@ -23,13 +96,13 @@ const fadeOutDown = keyframes`
 `;
 const DropdownBody = styled.div.attrs({
   style: props => ({
-    visibility:(props.show ? "visible" : "hidden"),
+    visibility: (props.show ? "visible" : "hidden"),
     animationName: props.show ? fadeInDown : fadeOutDown
   }),
-})`
+}) `
   position: absolute;
   width: ${props => props.width || props.coords.width}px;
-  top: ${props => props.coords.height+5}px;
+  top: ${props => props.coords.height + 5}px;
   animation-duration: 0.3s;
   animation-timing-function: ease;
   transform-origin: top center; 
@@ -56,73 +129,47 @@ const DropdownBody = styled.div.attrs({
       }
   }
 `;
-const DropdownAnchor = styled.a`
-  display: inline-block;
-  margin: 0.25em;
-  padding: 0.25em;
+const DropdownBodySidebar = styled.div.attrs({
+  style: props => ({
+    maxHeight: (props.show ? "200px" : "0px"),
+    transition: (props.show ? "all 0.6s ease-out" : "all 0.2s")
+  }),
+}) `
+  display:flex;
+  flex-direction: column;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  z-index: 1900;  
+  min-width: 240px;   
+  background: #e3e3e3;
+  border-radius: 3px; 
+  color: rgba(0, 0, 0, 0.87);  
+  box-shadow: inset 0px 0px 10px -2px rgba(0,0,0,0.45);
+    > *{
+     text-align: center; 
+     list-style: none;
+     width: calc(100% - 10px);
+     padding: 0.2em;
+     > *{        
+        background-color: #e3e3e3;
+        cursor: pointer;
+        &:hover {        
+        background: #fefefe; 
+      }
+  }
+`;
+const DropdownAnchor = styled.a.attrs({
+  style: props => ({
+    margin: (props.onBreakpointHit ? "0" : "0.25em"),
+    padding: (props.onBreakpointHit ? "0" : "0.25em")
+  }),
+}) `
+  display: inline-block;  
   cursor: pointer;
   text-decoration: none;
   color: inherit;
-  list-style: none;
-  
+  list-style: none; 
 `;
-class Dropdown extends React.PureComponent {
-  state = {
-    show: false,
-    popupHovered: false,
-    coords: {
-      top: 0,
-      left: 0,
-      width: 0
-    }
-  };
-  
-  showPopup = (e, message) => {
-    if(!this.state.show) {
-      setTimeout(() => {
-        this.setState({ show: true });
-      }, 200)
-    }
-  }
-
-  popupHovered = () => {
-     this.setState({ popupHovered: true });
-  };
-
-  hidePopup = (e, message) => {
-    setTimeout(() => {
-      (!this.state.popupHovered || message) && this.setState({ show: false, popupHovered:false });
-    }, 150);
-  }
-
-  componentDidMount() {
-    const newCoords = this.anchorBox.getBoundingClientRect();
-    this.setState({ coords: newCoords });
-  }
-
-  render() {
-    const {anchorText, width} = this.props;
-    return (
-      <div style={{position: "relative"}}>
-        <DropdownAnchor 
-          onMouseEnter={this.showPopup}
-          onMouseLeave={this.hidePopup}
-          innerRef={el => (this.anchorBox = el)}
-        >
-          {anchorText}
-        </DropdownAnchor>
-        <DropdownBody
-          width={width}
-          show={this.state.show}
-          coords={this.state.coords}
-          onMouseEnter={this.popupHovered}
-          onMouseLeave={(e) => this.hidePopup(e, "hovered")}
-        >
-          {this.props.children}
-        </DropdownBody>
-      </div>
-    );
-  }
-}
 
 export default Dropdown;

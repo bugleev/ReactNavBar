@@ -17,6 +17,7 @@ class Navbar extends React.Component {
     widthBreakpoint: null,
     breakpointHit: false,
     sideBarIsOpen: false,
+    isMobile: null,
     sticky: false,
     links: [],
     logos: []
@@ -33,6 +34,7 @@ class Navbar extends React.Component {
     }
     return breakPoint;
   };
+
   handleResize = () => {
     const sizeChange =
       window.innerWidth <= parseInt(this.state.widthBreakpoint, 10)
@@ -42,6 +44,7 @@ class Navbar extends React.Component {
       breakpointHit: sizeChange
     });
   };
+
   handleHamburgerClick = () => {
     const addOverflow = withTimer => {
       withTimer
@@ -54,7 +57,6 @@ class Navbar extends React.Component {
           ? "hidden"
           : "auto");
     };
-
     this.setState({ sideBarIsOpen: !this.state.sideBarIsOpen }, () => {
       const useTimer =
         this.props.sidebarAnimation === "slide" || !this.state.sideBarIsOpen
@@ -64,6 +66,11 @@ class Navbar extends React.Component {
       this.props.sidebarAnimation !== "slide" && this.addPushAnimation();
     });
   };
+
+  isMobile = () => {
+    return (typeof window.orientation !== "undefined" && window.screen.availWidth <= 480) || (navigator.userAgent.indexOf('IEMobile') !== -1 && window.screen.availWidth < 480);
+  };
+
   addPushAnimation = () => {
     if (this.state.sideBarIsOpen) {
       document.body.style.left = "320px";
@@ -73,6 +80,7 @@ class Navbar extends React.Component {
       document.body.style.transition = "left 0.3s";
     }
   };
+
   handleWindowScroll = () => {
     const navbarHeight =
       this.props.pinAnimation !== "follow" ? this.props.height || 80 : 0;
@@ -95,20 +103,23 @@ class Navbar extends React.Component {
     }
     this.setState({ links: myLinks, logos: myLogos });
   };
+
   componentWillMount() {
     this.handleResize();
     this.createLinks();
   }
+
   componentDidMount() {
     document.body.style.position = "relative";
     document.body.style.left = "0px";
     const breakPoint = this.calculateBreakpoint();
-    this.setState({ widthBreakpoint: breakPoint }, () => {
+    this.setState({ widthBreakpoint: breakPoint, isMobile: this.isMobile() }, () => {
       this.handleResize();
     });
     window.addEventListener("resize", this.handleResize);
     window.addEventListener("scroll", this.handleWindowScroll);
   }
+
   componentWillUnmount() {
     window.removeEventListener("resize", this.handleResize);
     window.removeEventListener("scroll", this.handleWindowScroll);
@@ -118,6 +129,7 @@ class Navbar extends React.Component {
     const {
       links,
       logos,
+      isMobile,
       sideBarIsOpen,
       breakpointHit,
       sticky
@@ -136,6 +148,7 @@ class Navbar extends React.Component {
     return (
       <div>
         <SideBar
+          width={isMobile ? window.screen.availWidth : undefined}
           sidebarOpen={sideBarIsOpen}
           slide={sidebarAnimation === "slide"}
           id="sidebar"
@@ -152,7 +165,7 @@ class Navbar extends React.Component {
                 click={this.handleHamburgerClick}
               />
             </HamburgerWrapper>
-            <SidebarLogo sidebarOpen={sideBarIsOpen}> Logo </SidebarLogo>
+            <SidebarLogo sidebarOpen={sideBarIsOpen}> {logos} </SidebarLogo>
             <ItemsList resize={breakpointHit} sidebar={true}>
               {newLinks.map((el, ind) => (
                 <Item key={ind} sidebar={true}>
