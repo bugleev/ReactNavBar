@@ -4,13 +4,14 @@ export const SideBar = styled.div.attrs({
   style: props => ({
     boxShadow: props.sidebarOpen ? "5px 0px 20px 1px rgba(0,0,0,0.15)" : "none",
     zIndex: !props.sidebarOpen ? "89" : "99",
-    left: props.width
-      ? props.slide
+    left: props.width ? props.sidebarOpen
+      ? props.slide ? "0px" : "-320px"
+      : `-${props.width}px`
+      : props.slide
         ? props.sidebarOpen
           ? "0px"
-          : `-${props.width}px`
-        : "-320px"
-      : "-320px",
+          : "-320px"
+        : "-320px",
     transition: props.slide
       ? props.sidebarOpen
         ? "left 0.2s, box-shadow 0.2s, z-index 0.4s"
@@ -104,8 +105,7 @@ export const NavbarPanel = styled.div.attrs({
   display: flex;
   align-items: center;
   z-index: 79;
-  margin-bottom: 0.1em;
-  /*background: radial-gradient(circle at bottom center, #ffc837 15px, #ff8008);*/
+  margin-bottom: 0.1em;  
   background-color: #fefefe;
   color: #333;
 `;
@@ -141,6 +141,4 @@ export const Item = styled.div`
   transition: transform 0.2s ease;
   
 `;
-export const ListLink = styled.a`
-  
-`;
+

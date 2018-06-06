@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from 'prop-types';
+import numericString from ".././helpers/heightValidator";
 import styled, { keyframes } from "styled-components";
 
 class Dropdown extends React.PureComponent {
@@ -38,7 +40,7 @@ class Dropdown extends React.PureComponent {
   }
 
   render() {
-    const { anchorText, width, breakpointHit } = this.props;
+    const { anchorText, width, breakpointHit, isMobile } = this.props;
     return (
       <div style={{ position: "relative" }}>
         <DropdownAnchor
@@ -56,6 +58,7 @@ class Dropdown extends React.PureComponent {
             width={width}
             show={this.state.show}
             coords={this.state.coords}
+            isMobile={isMobile}
           >
             {this.props.children}
           </DropdownBodySidebar>
@@ -101,8 +104,10 @@ const DropdownBody = styled.div.attrs({
   }),
 }) `
   position: absolute;
+  min-width: 75px;
   width: ${props => props.width || props.coords.width}px;
   top: ${props => props.coords.height + 5}px;
+  left: ${props => props.width ? `-${(props.width - props.coords.width) / 2}` : props.coords.width < 75 ? "-18" : "0"}px;
   animation-duration: 0.3s;
   animation-timing-function: ease;
   transform-origin: top center; 
@@ -126,8 +131,9 @@ const DropdownBody = styled.div.attrs({
         cursor: pointer;
         &:hover {
         transform: scale(1.1);
+        }
       }
-  }
+    }
 `;
 const DropdownBodySidebar = styled.div.attrs({
   style: props => ({
@@ -152,7 +158,8 @@ const DropdownBodySidebar = styled.div.attrs({
      width: calc(100% - 10px);
      padding: 0.2em;
      > *{        
-        background-color: #e3e3e3;
+        background-color: ${props => props.isMobile ? '#fefefe' : '#e3e3e3'};
+        margin: ${props => props.isMobile ? '0.1em auto' : '0'};
         cursor: pointer;
         &:hover {        
         background: #fefefe; 
@@ -172,4 +179,14 @@ const DropdownAnchor = styled.a.attrs({
   list-style: none; 
 `;
 
+Dropdown.defaultProps = {
+  anchorText: "Dropdown",
+  width: "",
+  navlink: "true"
+};
+Dropdown.propTypes = {
+  anchorText: PropTypes.string.isRequired,
+  width: numericString,
+  navlink: PropTypes.string.isRequired
+};
 export default Dropdown;

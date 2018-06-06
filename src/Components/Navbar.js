@@ -1,12 +1,14 @@
 import React from "react";
 import Hamburger from "./Hamburger";
+import numericString from ".././helpers/heightValidator";
+import numericAutoString from ".././helpers/widthValidator";
+import PropTypes from 'prop-types';
 import {
   Backdrop,
   NavbarPanel,
   SideBar,
   SidebarLogo,
   HamburgerWrapper,
-  ListLink,
   Logo,
   ItemsList,
   Item
@@ -37,7 +39,7 @@ class Navbar extends React.Component {
 
   handleResize = () => {
     const sizeChange =
-      window.innerWidth <= parseInt(this.state.widthBreakpoint, 10)
+      window.innerWidth <= this.state.widthBreakpoint
         ? true
         : false;
     this.setState({
@@ -93,12 +95,14 @@ class Navbar extends React.Component {
   createLinks = () => {
     let myLinks = [];
     let myLogos = [];
-    for (let child of this.props.children) {
-      if (child.props.navLogo) {
-        myLogos.push(child)
-      }
-      if (child.props.navlink) {
-        myLinks.push(child);
+    if (this.props.children) {
+      for (let child of this.props.children) {
+        if (child.props["data-navlogo"]) {
+          myLogos.push(child)
+        }
+        if (child.props["data-navlink"]) {
+          myLinks.push(child);
+        }
       }
     }
     this.setState({ links: myLinks, logos: myLogos });
@@ -124,7 +128,6 @@ class Navbar extends React.Component {
     window.removeEventListener("resize", this.handleResize);
     window.removeEventListener("scroll", this.handleWindowScroll);
   }
-
   render() {
     const {
       links,
@@ -137,7 +140,8 @@ class Navbar extends React.Component {
     const newLinks = React.Children.map(links, (child, index) => {
       if (typeof child.type !== "string") {
         return React.cloneElement(child, {
-          breakpointHit: this.state.breakpointHit
+          breakpointHit: this.state.breakpointHit,
+          isMobile
         })
       } else {
         return React.cloneElement(child)
@@ -159,7 +163,7 @@ class Navbar extends React.Component {
                 options={{
                   toggle: false,
                   initialState: 1,
-                  size: "m",
+                  size: "s",
                   color: "black"
                 }}
                 click={this.handleHamburgerClick}
@@ -177,6 +181,7 @@ class Navbar extends React.Component {
         </SideBar>
         <Backdrop sidebarOpen={sideBarIsOpen} className="backdrop" />
         <NavbarPanel
+          className="navbar-panel"
           resize={breakpointHit}
           navbarHeight={height}
           sticky={sticky}
@@ -194,20 +199,18 @@ class Navbar extends React.Component {
               ref={el => (this.sizeLinks = el)}
               style={{ display: "flex", alignItems: "center" }}
             >
-              {!breakpointHit ? (
-                newLinks.map((el, ind) => (
-                  <Item key={ind}>
-                    {el}
-                  </Item>
-                ))
-              ) : (
-                  <HamburgerWrapper resize={breakpointHit}>
-                    <Hamburger
-                      options={{ toggle: false, initialState: 0, size: "m", color: "black" }}
-                      click={this.handleHamburgerClick}
-                      sidebarOpen={sideBarIsOpen}
-                    />
-                  </HamburgerWrapper>
+              {!breakpointHit ? (newLinks.map((el, ind) => (
+                <Item key={ind}>
+                  {el}
+                </Item>
+              ))
+              ) : (<HamburgerWrapper resize={breakpointHit}>
+                <Hamburger
+                  options={{ toggle: false, initialState: 0, size: "s", color: "black" }}
+                  click={this.handleHamburgerClick}
+                  sidebarOpen={sideBarIsOpen}
+                />
+              </HamburgerWrapper>
                 )}
             </div>
           </ItemsList>
@@ -216,5 +219,16 @@ class Navbar extends React.Component {
     );
   }
 }
-
+Navbar.defaultProps = {
+  height: "",
+  widthBreakpoint: "auto",
+  sidebarAnimation: "slide",
+  pinAnimation: "follow"
+};
+Navbar.propTypes = {
+  height: numericString.isRequired,
+  widthBreakpoint: numericAutoString.isRequired,
+  sidebarAnimation: PropTypes.string,
+  pinAnimation: PropTypes.string
+};
 export default Navbar;
