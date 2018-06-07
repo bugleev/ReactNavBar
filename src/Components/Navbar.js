@@ -98,13 +98,23 @@ class Navbar extends React.Component {
   createLinks = () => {
     let myLinks = [];
     let myLogos = [];
-    if (this.props.children) {
-      for (let child of this.props.children) {
+    const { children } = this.props;
+    if (children && children.length) {
+      for (let child of children) {
         if (child.props["data-navlogo"]) {
           myLogos.push(child);
         }
         if (child.props["data-navlink"]) {
           myLinks.push(child);
+        }
+      }
+    } else {
+      if (children) {
+        if (children.props["data-navlogo"]) {
+          myLogos.push(children);
+        }
+        if (children.props["data-navlink"]) {
+          myLinks.push(children);
         }
       }
     }
