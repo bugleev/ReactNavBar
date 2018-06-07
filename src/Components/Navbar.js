@@ -172,6 +172,7 @@ class Navbar extends React.Component {
           sidebarOpen={sideBarIsOpen}
           slide={sidebarAnimation === "slide"}
           id="sidebar"
+          data-testid="sidebar"
         >
           <div>
             <HamburgerWrapper resize={breakpointHit}>

@@ -1,5 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import {
+  render,
+  Simulate,
+  cleanup,
+  renderIntoDocument
+} from "react-testing-library";
 import Navbar from ".././Navbar";
 
 test("renders without crashing", () => {
@@ -31,24 +37,17 @@ test("render only children with prop 'data-navlink'", () => {
 });
 
 test("click on a hamburger icon fires the event", () => {
-  const container = document.createElement("div");
-  const click = jest.fn();
-  ReactDOM.render(
+  const { getByTestId } = render(
     <Navbar>
-      <li data-navlink="true">
-        <div className="naf" onClick={click}>
-          Test
-        </div>
+      <li data-navlink="true" className="naf">
+        <div>Test</div>
       </li>
       <p data-navlink="true">Apple</p>
       <a>Soda</a>
-    </Navbar>,
-    container
+    </Navbar>
   );
-  window.resizeTo = (400, 400);
-  const hamburgerIcon = container.querySelector(".naf");
-
-  const clickDiv = new window.Event("click", { bubbles: true });
-  hamburgerIcon.dispatchEvent(clickDiv);
-  expect(click).toBeCalled();
+  const sidebarBefore = getByTestId("sidebar").style.zIndex;
+  Simulate.click(getByTestId("hamburger"));
+  const sidebarAfter = getByTestId("sidebar").style.zIndex;
+  expect(sidebarBefore).not.toEqual(sidebarAfter);
 });

@@ -29,6 +29,7 @@ class Hamburger extends React.Component {
         onClick={this.toggle}
         hide={this.props.sidebarOpen}
         className="hamburger-icon"
+        data-testid="hamburger"
       >
         <HamburgerIcon color={this.state.color} size={size} toggle={toggle} />
       </IconWrapper>
