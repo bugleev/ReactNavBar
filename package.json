@@ -13,11 +13,26 @@
     "react-scripts": "~1.1.4",
     "styled-components": "~3.2.6"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "prettier": "^1.13.4"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/Components/*.{js,jsx}",
+      "src/Styled Components/*.{js,jsx}",
+      "!<rootDir>/node_modules/",
+      "!src/Components/Body.js",
+      "!src/Components/Header.js",
+      "!src/Components/Footer.js",
+      "!<rootDir>/path/to/dir/"
+    ]
   }
 }

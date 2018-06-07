@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import numericString from ".././helpers/heightValidator";
 import styled, { keyframes } from "styled-components";
 
@@ -18,21 +18,22 @@ class Dropdown extends React.PureComponent {
     if (!this.state.show) {
       setTimeout(() => {
         this.setState({ show: true });
-      }, 200)
+      }, 200);
     }
-  }
+  };
   handleClick = () => {
     this.setState({ show: !this.state.show });
-  }
+  };
   popupIsHovered = () => {
     this.setState({ popupIsHovered: true });
   };
 
   hidePopup = (e, message) => {
     setTimeout(() => {
-      (!this.state.popupIsHovered || message) && this.setState({ show: false, popupIsHovered: false });
+      (!this.state.popupIsHovered || message) &&
+        this.setState({ show: false, popupIsHovered: false });
     }, 150);
-  }
+  };
 
   componentDidMount() {
     const newCoords = this.anchorBox.getBoundingClientRect();
@@ -52,8 +53,8 @@ class Dropdown extends React.PureComponent {
         >
           {anchorText}
         </DropdownAnchor>
-        {breakpointHit
-          ? <DropdownBodySidebar
+        {breakpointHit ? (
+          <DropdownBodySidebar
             className="dropdown__body--sidebar"
             width={width}
             show={this.state.show}
@@ -62,17 +63,18 @@ class Dropdown extends React.PureComponent {
           >
             {this.props.children}
           </DropdownBodySidebar>
-          : <DropdownBody
+        ) : (
+          <DropdownBody
             className="dropdown__body--sidebar"
             width={width}
             show={this.state.show}
             coords={this.state.coords}
             onMouseEnter={this.popupIsHovered}
-            onMouseLeave={(e) => this.hidePopup(e, "hovered")}
+            onMouseLeave={e => this.hidePopup(e, "hovered")}
           >
             {this.props.children}
-          </DropdownBody>}
-
+          </DropdownBody>
+        )}
       </div>
     );
   }
@@ -99,20 +101,25 @@ const fadeOutDown = keyframes`
 `;
 const DropdownBody = styled.div.attrs({
   style: props => ({
-    visibility: (props.show ? "visible" : "hidden"),
+    visibility: props.show ? "visible" : "hidden",
     animationName: props.show ? fadeInDown : fadeOutDown
-  }),
-}) `
+  })
+})`
   position: absolute;
   min-width: 75px;
   width: ${props => props.width || props.coords.width}px;
   top: ${props => props.coords.height + 5}px;
-  left: ${props => props.width ? `-${(props.width - props.coords.width) / 2}` : props.coords.width < 75 ? "-18" : "0"}px;
+  left: ${props =>
+    props.width
+      ? `-${(props.width - props.coords.width) / 2}`
+      : props.coords.width < 75
+        ? "-18"
+        : "0"}px;
   animation-duration: 0.3s;
   animation-timing-function: ease;
-  transform-origin: top center; 
+  transform-origin: top center;
   transition: visibility 0.3s ease;
-  display:flex;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   z-index: 1900;
@@ -123,24 +130,24 @@ const DropdownBody = styled.div.attrs({
   color: rgba(0, 0, 0, 0.87);
   border-radius: 0.28571429rem;
   box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12),
-  0px 2px 10px 0px rgba(34, 36, 38, 0.15);
-    > *{
-     list-style: none;
-     padding: 0.2em;
-     > *{
-        cursor: pointer;
-        &:hover {
+    0px 2px 10px 0px rgba(34, 36, 38, 0.15);
+  > * {
+    list-style: none;
+    padding: 0.2em;
+    > * {
+      cursor: pointer;
+      &:hover {
         transform: scale(1.1);
-        }
       }
     }
+  }
 `;
 const DropdownBodySidebar = styled.div.attrs({
   style: props => ({
-    maxHeight: (props.show ? "200px" : "0px"),
-    transition: (props.show ? "all 0.6s ease-out" : "all 0.2s")
-  }),
-}) `
+    maxHeight: props.show ? "200px" : "0px",
+    transition: props.show ? "all 0.6s ease-out" : "all 0.2s"
+  })
+})`
   display:flex;
   flex-direction: column;
   overflow: hidden;
@@ -158,8 +165,8 @@ const DropdownBodySidebar = styled.div.attrs({
      width: calc(100% - 10px);
      padding: 0.2em;
      > *{        
-        background-color: ${props => props.isMobile ? '#fefefe' : '#e3e3e3'};
-        margin: ${props => props.isMobile ? '0.1em auto' : '0'};
+        background-color: ${props => (props.isMobile ? "#fefefe" : "#e3e3e3")};
+        margin: ${props => (props.isMobile ? "0.1em auto" : "0")};
         cursor: pointer;
         &:hover {        
         background: #fefefe; 
@@ -168,15 +175,15 @@ const DropdownBodySidebar = styled.div.attrs({
 `;
 const DropdownAnchor = styled.a.attrs({
   style: props => ({
-    margin: (props.onBreakpointHit ? "0" : "0.25em"),
-    padding: (props.onBreakpointHit ? "0" : "0.25em")
-  }),
-}) `
-  display: inline-block;  
+    margin: props.onBreakpointHit ? "0" : "0.25em",
+    padding: props.onBreakpointHit ? "0" : "0.25em"
+  })
+})`
+  display: inline-block;
   cursor: pointer;
   text-decoration: none;
   color: inherit;
-  list-style: none; 
+  list-style: none;
 `;
 
 Dropdown.defaultProps = {

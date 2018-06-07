@@ -1,8 +1,13 @@
-import { string } from 'prop-types';
+import { string } from "prop-types";
 
 const validNumericChars = /^[-+]?(?:[1-9][0-9]*(?:\.[0-9]+)?|0|0\.[0-9]+)$/;
 
-const validator = function numericString(props, propName, componentName, ...rest) {
+const validator = function numericString(
+  props,
+  propName,
+  componentName,
+  ...rest
+) {
   if (props[propName] == null) {
     return null;
   }
@@ -28,7 +33,12 @@ const validator = function numericString(props, propName, componentName, ...rest
   `);
 };
 
-validator.isRequired = function numericStringRequired(props, propName, componentName, ...rest) {
+validator.isRequired = function numericStringRequired(
+  props,
+  propName,
+  componentName,
+  ...rest
+) {
   if (props[propName] == null) {
     return new TypeError(`${componentName}: ${propName} is required`);
   }

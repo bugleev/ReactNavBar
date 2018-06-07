@@ -2,7 +2,7 @@ import React from "react";
 import Hamburger from "./Hamburger";
 import numericString from ".././helpers/heightValidator";
 import numericAutoString from ".././helpers/widthValidator";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import {
   Backdrop,
   NavbarPanel,
@@ -39,9 +39,7 @@ class Navbar extends React.Component {
 
   handleResize = () => {
     const sizeChange =
-      window.innerWidth <= this.state.widthBreakpoint
-        ? true
-        : false;
+      window.innerWidth <= this.state.widthBreakpoint ? true : false;
     this.setState({
       breakpointHit: sizeChange
     });
@@ -51,13 +49,13 @@ class Navbar extends React.Component {
     const addOverflow = withTimer => {
       withTimer
         ? setTimeout(() => {
-          document.body.style.overflow = this.state.sideBarIsOpen
-            ? "hidden"
-            : "auto";
-        }, 250)
+            document.body.style.overflow = this.state.sideBarIsOpen
+              ? "hidden"
+              : "auto";
+          }, 250)
         : (document.body.style.overflow = this.state.sideBarIsOpen
-          ? "hidden"
-          : "auto");
+            ? "hidden"
+            : "auto");
     };
     this.setState({ sideBarIsOpen: !this.state.sideBarIsOpen }, () => {
       const useTimer =
@@ -70,7 +68,12 @@ class Navbar extends React.Component {
   };
 
   isMobile = () => {
-    return (typeof window.orientation !== "undefined" && window.screen.availWidth <= 480) || (navigator.userAgent.indexOf('IEMobile') !== -1 && window.screen.availWidth < 480);
+    return (
+      (typeof window.orientation !== "undefined" &&
+        window.screen.availWidth <= 480) ||
+      (navigator.userAgent.indexOf("IEMobile") !== -1 &&
+        window.screen.availWidth < 480)
+    );
   };
 
   addPushAnimation = () => {
@@ -89,8 +92,8 @@ class Navbar extends React.Component {
     window.scrollY > navbarHeight && !this.state.sticky
       ? this.setState({ sticky: true })
       : window.scrollY === 0 &&
-      this.state.sticky &&
-      this.setState({ sticky: false });
+        this.state.sticky &&
+        this.setState({ sticky: false });
   };
   createLinks = () => {
     let myLinks = [];
@@ -98,7 +101,7 @@ class Navbar extends React.Component {
     if (this.props.children) {
       for (let child of this.props.children) {
         if (child.props["data-navlogo"]) {
-          myLogos.push(child)
+          myLogos.push(child);
         }
         if (child.props["data-navlink"]) {
           myLinks.push(child);
@@ -117,9 +120,12 @@ class Navbar extends React.Component {
     document.body.style.position = "relative";
     document.body.style.left = "0px";
     const breakPoint = this.calculateBreakpoint();
-    this.setState({ widthBreakpoint: breakPoint, isMobile: this.isMobile() }, () => {
-      this.handleResize();
-    });
+    this.setState(
+      { widthBreakpoint: breakPoint, isMobile: this.isMobile() },
+      () => {
+        this.handleResize();
+      }
+    );
     window.addEventListener("resize", this.handleResize);
     window.addEventListener("scroll", this.handleWindowScroll);
   }
@@ -142,9 +148,9 @@ class Navbar extends React.Component {
         return React.cloneElement(child, {
           breakpointHit: this.state.breakpointHit,
           isMobile
-        })
+        });
       } else {
-        return React.cloneElement(child)
+        return React.cloneElement(child);
       }
     });
     const { height, pinAnimation, sidebarAnimation } = this.props;
@@ -183,7 +189,7 @@ class Navbar extends React.Component {
         <NavbarPanel
           className="navbar-panel"
           resize={breakpointHit}
-          navbarHeight={height}
+          navbarHeight={`${height}px`}
           sticky={sticky}
           follow={pinAnimation === "follow"}
         >
@@ -191,7 +197,8 @@ class Navbar extends React.Component {
             <Logo
               resize={breakpointHit}
               navbarHeight={height}
-              innerRef={el => (this.sizeLogo = el)} id="logo-wrapper"
+              innerRef={el => (this.sizeLogo = el)}
+              id="logo-wrapper"
             >
               {logos}
             </Logo>
@@ -199,19 +206,22 @@ class Navbar extends React.Component {
               ref={el => (this.sizeLinks = el)}
               style={{ display: "flex", alignItems: "center" }}
             >
-              {!breakpointHit ? (newLinks.map((el, ind) => (
-                <Item key={ind}>
-                  {el}
-                </Item>
-              ))
-              ) : (<HamburgerWrapper resize={breakpointHit}>
-                <Hamburger
-                  options={{ toggle: false, initialState: 0, size: "s", color: "black" }}
-                  click={this.handleHamburgerClick}
-                  sidebarOpen={sideBarIsOpen}
-                />
-              </HamburgerWrapper>
-                )}
+              {!breakpointHit ? (
+                newLinks.map((el, ind) => <Item key={ind}>{el}</Item>)
+              ) : (
+                <HamburgerWrapper resize={breakpointHit}>
+                  <Hamburger
+                    options={{
+                      toggle: false,
+                      initialState: 0,
+                      size: "s",
+                      color: "black"
+                    }}
+                    click={this.handleHamburgerClick}
+                    sidebarOpen={sideBarIsOpen}
+                  />
+                </HamburgerWrapper>
+              )}
             </div>
           </ItemsList>
         </NavbarPanel>

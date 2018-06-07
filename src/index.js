@@ -9,11 +9,13 @@ import Dropdown from "./Components/Dropdown";
 const Logo = () => (
   <div>
     <a href="">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1000px-React-icon.svg.png" alt="logo" />
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1000px-React-icon.svg.png"
+        alt="logo"
+      />
     </a>
   </div>
-)
-
+);
 
 class Layout extends React.Component {
   state = {};
@@ -21,7 +23,7 @@ class Layout extends React.Component {
     return (
       <React.Fragment>
         <div>
-          <Navbar >
+          <Navbar>
             <Dropdown anchorText="Big Data ON Board" data-navlink="true">
               <ul>
                 <li>
@@ -33,11 +35,15 @@ class Layout extends React.Component {
               </ul>
             </Dropdown>
             <div data-navlink="true">
-              <p><a href="">Nested link</a></p>
+              <p>
+                <a href="">Nested link</a>
+              </p>
             </div>
             <li data-navlink="true">Link LI</li>
             <li data-navlink="true">Crazy stuff</li>
-            <a href="" data-navlink="true">Direct Link</a>
+            <a href="" data-navlink="true">
+              Direct Link
+            </a>
             <Logo data-navlogo="true" />
           </Navbar>
         </div>

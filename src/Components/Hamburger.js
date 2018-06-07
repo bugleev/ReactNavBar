@@ -1,5 +1,8 @@
 import React from "react";
-import { IconWrapper, HamburgerIcon } from "../Styled Components/HamburgerStyles";
+import {
+  IconWrapper,
+  HamburgerIcon
+} from "../Styled Components/HamburgerStyles";
 
 class Hamburger extends React.Component {
   state = {
@@ -21,7 +24,11 @@ class Hamburger extends React.Component {
     const size = this.state.sizes[this.props.options.size];
     const { toggle } = this.state;
     return (
-      <IconWrapper size={size} onClick={this.toggle} hide={this.props.sidebarOpen}>
+      <IconWrapper
+        size={size}
+        onClick={this.toggle}
+        hide={this.props.sidebarOpen}
+      >
         <HamburgerIcon color={this.state.color} size={size} toggle={toggle} />
       </IconWrapper>
     );
