@@ -50,6 +50,7 @@ class Dropdown extends React.PureComponent {
           onClick={breakpointHit ? this.handleClick : undefined}
           onBreakpointHit={breakpointHit}
           innerRef={el => (this.anchorBox = el)}
+          data-testid="DropdownAnchor"
         >
           {anchorText}
         </DropdownAnchor>
@@ -60,6 +61,7 @@ class Dropdown extends React.PureComponent {
             show={this.state.show}
             coords={this.state.coords}
             isMobile={isMobile}
+            data-testid="DropdownSidebar"
           >
             {this.props.children}
           </DropdownBodySidebar>
@@ -71,6 +73,7 @@ class Dropdown extends React.PureComponent {
             coords={this.state.coords}
             onMouseEnter={this.popupIsHovered}
             onMouseLeave={e => this.hidePopup(e, "hovered")}
+            data-testid="DropdownBody"
           >
             {this.props.children}
           </DropdownBody>

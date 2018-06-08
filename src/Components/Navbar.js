@@ -87,6 +87,7 @@ class Navbar extends React.Component {
   };
 
   handleWindowScroll = () => {
+    throw Error("fare!");
     const navbarHeight =
       this.props.pinAnimation !== "follow" ? this.props.height || 80 : 0;
     window.scrollY > navbarHeight && !this.state.sticky
@@ -203,6 +204,7 @@ class Navbar extends React.Component {
           navbarHeight={`${height}px`}
           sticky={sticky}
           follow={pinAnimation === "follow"}
+          data-testid="navbar-panel"
         >
           <ItemsList resize={breakpointHit}>
             <Logo

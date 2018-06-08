@@ -3,35 +3,34 @@ import ReactDOM from "react-dom";
 import {
   render,
   Simulate,
+  getByText,
   cleanup,
-  renderIntoDocument
+  renderIntoDocument,
+  fireEvent
 } from "react-testing-library";
 import Navbar from ".././Navbar";
 
+afterEach(cleanup);
 test("renders without crashing", () => {
-  const div = document.createElement("div");
-  ReactDOM.render(<Navbar />, div);
+  renderIntoDocument(<Navbar />);
 });
 
 test("render correct height when given prop 'height'", () => {
-  const div = document.createElement("div");
   const height = "200";
-  ReactDOM.render(<Navbar height={height} />, div);
-  const navbarPanel = div.querySelector(".navbar-panel");
+  const { container } = render(<Navbar height={height} />);
+  const navbarPanel = container.querySelector(".navbar-panel");
   expect(navbarPanel.style.height).toBe(`${height}px`);
 });
 
 test("render only children with prop 'data-navlink'", () => {
-  const container = document.createElement("div");
-  ReactDOM.render(
+  const { container } = render(
     <Navbar>
-      <li>
-        <div data-navlink="true">Test</div>
+      <li data-navlink="true">
+        <div>Test</div>
       </li>
       <p data-navlink="true">Apple</p>
       <a>Soda</a>
-    </Navbar>,
-    container
+    </Navbar>
   );
   expect(container.textContent).not.toMatch("Soda");
 });
@@ -46,8 +45,10 @@ test("click on a hamburger icon fires the event", () => {
       <a>Soda</a>
     </Navbar>
   );
-  const sidebarBefore = getByTestId("sidebar").style.zIndex;
+  const sidebarBefore = getByTestId("sidebar").style.left;
   Simulate.click(getByTestId("hamburger"));
-  const sidebarAfter = getByTestId("sidebar").style.zIndex;
+  const sidebarAfter = getByTestId("sidebar").style.left;
   expect(sidebarBefore).not.toEqual(sidebarAfter);
 });
+
+test("navbar sticks on scroll", () => {});
